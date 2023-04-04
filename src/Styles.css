@@ -1,0 +1,14 @@
+.login-div,
+.register-div {
+  width: 400px;
+  margin: 30px auto;
+  text-align: center;
+}
+input {
+  margin-top: 10px;
+  box-sizing: border-box;
+  border: none;
+}
+select {
+  margin-top: 10px;
+}
