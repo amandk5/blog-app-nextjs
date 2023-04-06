@@ -5,8 +5,6 @@ import argon2 from "argon2";
 import jwt from "jsonwebtoken";
 import cors from "cors";
 
-import cors from "cors";
-
 // Set up cors options
 const corsOptions = {
   origin: "*", // Allow requests from any origin
