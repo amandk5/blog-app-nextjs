@@ -29,9 +29,17 @@ export default function Home({ posts }) {
     } else {
       dispatch({ type: SET_INITIAL_STATE, payload: null });
     }
+  }, [token]);
 
+  // if (token !== "null" || token !== undefined || token !== null) {
+  //   router.replace("/dashboard");
+  // }
+
+  useEffect(() => {
     if (token !== null) {
       router.replace("/dashboard");
+    } else {
+      router.replace("/");
     }
   }, [token]);
 
