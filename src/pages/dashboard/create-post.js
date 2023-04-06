@@ -1,11 +1,9 @@
-import { logoutUser } from "@/redux/auth/auth.action";
-import { Box, Button, Heading, Text, background } from "@chakra-ui/react";
+import { Box, Button, Heading } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import MyEditor from "@/components/MyEditor";
-import { DraftEditor } from "../draft-editor";
 import DOMPurify from "dompurify";
 import DashboardHeader from "@/components/DashboardHeader";
 import { postBlog } from "@/redux/blog/blog.action";

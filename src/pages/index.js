@@ -1,10 +1,10 @@
 import { SET_INITIAL_STATE } from "@/redux/auth/auth.types";
-import { Box, Button, Heading, Text } from "@chakra-ui/react";
-import Link from "next/link";
+import { Box } from "@chakra-ui/react";
+
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import { FaBlogger } from "react-icons/fa";
+
 import LogoAndAppName from "@/components/LogoAndAppName";
 import { useState } from "react";
 import LoginAndRegisterLink from "@/components/LoginAndRegisterLink";
