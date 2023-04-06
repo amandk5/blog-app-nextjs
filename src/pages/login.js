@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
+import LogoAndAppName from "@/components/LogoAndAppName";
 
 export default function Login() {
   // get token from AuthReducer
@@ -43,39 +44,43 @@ export default function Login() {
   }, [token]);
 
   return (
-    <div className="register-div">
-      <Heading>LOGIN</Heading>
+    <>
+      <LogoAndAppName />
       <br />
-      <form onSubmit={loginHandler}>
-        <Input
-          required
-          type="email"
-          placeholder="Enter Email"
-          name="email"
-          value={userCreds.email}
-          onChange={handleInputChange}
-        />
-        <Input
-          required
-          type="password"
-          placeholder="Enter Password"
-          name="password"
-          value={userCreds.password}
-          onChange={handleInputChange}
-        />
+      <div className="register-div">
+        <Heading fontSize="x-large">LOGIN</Heading>
         <br />
+        <form onSubmit={loginHandler}>
+          <Input
+            required
+            type="email"
+            placeholder="Enter Email"
+            name="email"
+            value={userCreds.email}
+            onChange={handleInputChange}
+          />
+          <Input
+            required
+            type="password"
+            placeholder="Enter Password"
+            name="password"
+            value={userCreds.password}
+            onChange={handleInputChange}
+          />
+          <br />
+          <br />
+          <Button bg="#3a86ff" color="white" px="5" type="submit">
+            Login
+          </Button>
+        </form>
         <br />
-        <Button bg="#3a86ff" color="white" px="5" type="submit">
-          Login
-        </Button>
-      </form>
-      <br />
-      <Box mt="2">
-        Not Registered?{" "}
-        <Text display="inline" color="red">
-          <Link href="/register">Register Here</Link>
-        </Text>
-      </Box>
-    </div>
+        <Box mt="2">
+          Not Registered?{" "}
+          <Text display="inline" color="red">
+            <Link href="/register">Register Here</Link>
+          </Text>
+        </Box>
+      </div>
+    </>
   );
 }

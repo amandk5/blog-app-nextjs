@@ -1,4 +1,4 @@
-import { LOGIN_USER, LOGOUT_USER, SET_INITIAL_STATE } from "./auth.types";
+import { LOGIN_USER, LOGOUT_USER, SET_INITIAL_STATE, TEST } from "./auth.types";
 
 const initState = {
   token: "null",
@@ -7,7 +7,7 @@ const initState = {
 //   token: localStorage.getItem("blog_app_user_token") || null,
 // };
 
-export default function AuthReducer(state = initState, action) {
+export default function authReducer(state = initState, action) {
   switch (action.type) {
     case LOGIN_USER:
       // add to localStorage

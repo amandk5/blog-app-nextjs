@@ -5,13 +5,15 @@ import {
   applyMiddleware,
 } from "redux";
 import thunk from "redux-thunk";
-import AuthReducer from "./auth/auth.reducer";
+import authReducer from "./auth/auth.reducer";
+import blogReducer from "./blog/blog.reducer";
 
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 
 const rootReducer = combineReducers({
-  auth: AuthReducer,
+  auth: authReducer,
+  blog: blogReducer,
 });
 
 const persistConfig = {

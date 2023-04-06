@@ -1,16 +1,26 @@
 import { SET_INITIAL_STATE } from "@/redux/auth/auth.types";
-import { Heading } from "@chakra-ui/react";
+import { Box, Button, Heading, Text } from "@chakra-ui/react";
 import Link from "next/link";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
+import { FaBlogger } from "react-icons/fa";
+import LogoAndAppName from "@/components/LogoAndAppName";
+import { useState } from "react";
+import LoginAndRegisterLink from "@/components/LoginAndRegisterLink";
+import axios from "axios";
+import DisplayBlogs from "@/components/DisplayBlogs";
 
-export default function Home() {
+export default function Home({ posts }) {
   const { token } = useSelector((store) => store.auth);
 
+  const [blogPosts, setBlogPosts] = useState(posts);
+
+  // for dispatching action
   const dispatch = useDispatch();
   // for routing
   const router = useRouter();
+  // console.log(posts);
 
   useEffect(() => {
     if (localStorage.getItem("blog_app_user_token") !== undefined) {
@@ -19,19 +29,39 @@ export default function Home() {
     } else {
       dispatch({ type: SET_INITIAL_STATE, payload: null });
     }
+
+    if (token !== null) {
+      router.replace("/dashboard");
+    }
   }, [token]);
 
-  if (token !== null) {
-    router.replace("/dashboard");
-  } else {
-    router.replace("/login");
-  }
-
   return (
-    <div>
-      <Heading textAlign="center">Home Page</Heading>
-      {/* <Link href="/login">Login</Link>&nbsp;&nbsp;
-      <Link href="/register">Register</Link> */}
-    </div>
+    <Box margin="auto" width="95%">
+      <LogoAndAppName />
+      <LoginAndRegisterLink />
+      <br />
+      <Box margin={"auto"} w="95%">
+        {/* display blogs here  */}
+        {blogPosts.length !== 0 && <DisplayBlogs posts={blogPosts} />}
+      </Box>
+    </Box>
   );
+}
+
+export async function getServerSideProps() {
+  try {
+    // Make a GET request to your API endpoint for retrieving blog posts
+    const response = await axios.get("http://localhost:3000/api/blog");
+    // Extract the blog posts from the API response data
+    const posts = response.data.post;
+    // console.log(posts);
+    // Pass the blog posts as props to the page component
+    return { props: { posts } };
+  } catch (err) {
+    console.error(err);
+
+    // Handle any errors that occur while fetching the data
+    // return { props: { posts: [] }, notFound: true };
+    return { props: { posts: [] } };
+  }
 }
