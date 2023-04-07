@@ -59,9 +59,14 @@ export default function Home({ posts }) {
 export async function getServerSideProps() {
   try {
     // Make a GET request to your API endpoint for retrieving blog posts
-    const response = await axios.get("http://localhost:3000/api/blog");
+
+    const response = await fetch(
+      "https://blog-app-adk.vercel.app/api/blog"
+    ).then((res) => res.json());
+    // console.log(d);
+    // const response = await axios.get("http://localhost:3000/api/blog");
     // Extract the blog posts from the API response data
-    const posts = response.data.post;
+    const posts = response.post;
     // console.log(posts);
     // Pass the blog posts as props to the page component
     return { props: { posts } };

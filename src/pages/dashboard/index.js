@@ -25,7 +25,9 @@ export default function Dashboard({ posts }) {
 export async function getServerSideProps() {
   try {
     // Make a GET request to your API endpoint for retrieving blog posts
-    const response = await axios.get("http://localhost:3000/api/blog");
+    const response = await axios.get(
+      "https://blog-app-adk.vercel.app/api/blog"
+    );
     // Extract the blog posts from the API response data
     const posts = response.data.post;
 

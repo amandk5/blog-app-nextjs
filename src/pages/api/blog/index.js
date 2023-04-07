@@ -3,22 +3,20 @@ import dbConnect from "../../../db/dbConnect";
 import User from "../../../models/user";
 import argon2 from "argon2";
 import jwt from "jsonwebtoken";
-import cors from "cors";
+import NextCors from "nextjs-cors";
 
-// Set up cors options
-const corsOptions = {
-  origin: "*", // Allow requests from any origin
-  methods: ["GET", "POST"], // Allow GET and POST requests
-  allowedHeaders: ["Content-Type", "Authorization"], // Allow these headers
-  preflightContinue: true, // Allow preflight requests to return HTTP 200 status code
-  optionsSuccessStatus: 204, // Set the response status code for successful OPTIONS requests
-};
 
 export default async function handler(req, res) {
   const { method } = req;
 
-  // Use cors middleware
-  await cors(corsOptions)(req, res);
+  // Run the cors middleware
+  // nextjs-cors uses the cors package, so we invite you to check the documentation https://github.com/expressjs/cors
+  await NextCors(req, res, {
+    // Options
+    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
+    origin: "*",
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  });
 
   await dbConnect().then(() => console.log("connected"));
 
