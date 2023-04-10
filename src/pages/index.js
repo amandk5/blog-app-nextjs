@@ -10,17 +10,38 @@ import { useState } from "react";
 import LoginAndRegisterLink from "@/components/LoginAndRegisterLink";
 import axios from "axios";
 import DisplayBlogs from "@/components/DisplayBlogs";
+import Pagination from "@/components/Pagination";
+import { UPDATE_CURRENT_PAGE } from "@/redux/blog/blog.types";
 
-export default function Home({ posts }) {
+export default function Home({ posts, totalPages, page }) {
   const { token } = useSelector((store) => store.auth);
+  const { currentPage } = useSelector((store) => store.blog);
 
-  const [blogPosts, setBlogPosts] = useState(posts);
+  if (currentPage === null) {
+    dispatch({ type: UPDATE_CURRENT_PAGE, payload: page });
+  }
 
   // for dispatching action
   const dispatch = useDispatch();
   // for routing
   const router = useRouter();
-  // console.log(posts);
+
+  // for handling pagination
+  const onPageChange = (page) => {
+    // setCurrentPage(page);
+    dispatch({ type: UPDATE_CURRENT_PAGE, payload: page });
+    router.push(`/?page=${page}`);
+    // console.log("index page", page);
+  };
+
+  useEffect(() => {
+    if (router.pathname === "/" && currentPage !== 1) {
+      if (currentPage !== 1) {
+        dispatch({ type: UPDATE_CURRENT_PAGE, payload: currentPage });
+        router.push(`/?page=${currentPage}`);
+      }
+    }
+  }, [router.query.page]);
 
   useEffect(() => {
     if (localStorage.getItem("blog_app_user_token") !== undefined) {
@@ -30,10 +51,6 @@ export default function Home({ posts }) {
       dispatch({ type: SET_INITIAL_STATE, payload: null });
     }
   }, [token]);
-
-  // if (token !== "null" || token !== undefined || token !== null) {
-  //   router.replace("/dashboard");
-  // }
 
   useEffect(() => {
     if (token !== null) {
@@ -50,26 +67,40 @@ export default function Home({ posts }) {
       <br />
       <Box margin={"auto"} w="95%">
         {/* display blogs here  */}
-        {blogPosts.length !== 0 && <DisplayBlogs posts={blogPosts} />}
+        {posts.length !== 0 && (
+          <>
+            <DisplayBlogs posts={posts} />
+            {/* pagination  */}
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={onPageChange}
+            />
+          </>
+        )}
       </Box>
     </Box>
   );
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps({ query }) {
   try {
-    // Make a GET request to your API endpoint for retrieving blog posts
+    // current page
+    const page = query.page || 1;
+    const limit = 10;
 
+    // Make a GET request to your API endpoint for retrieving blog posts
     const response = await fetch(
-      "https://blog-app-adk.vercel.app/api/blog"
+      `https://blog-app-adk.vercel.app/api/blog?current_page=${page}&limit=${limit}`
     ).then((res) => res.json());
     // console.log(d);
     // const response = await axios.get("http://localhost:3000/api/blog");
     // Extract the blog posts from the API response data
     const posts = response.post;
+    const totalPages = response.totalPages;
     // console.log(posts);
     // Pass the blog posts as props to the page component
-    return { props: { posts } };
+    return { props: { posts, totalPages, page } };
   } catch (err) {
     console.error(err);
 

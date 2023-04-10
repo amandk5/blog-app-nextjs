@@ -24,3 +24,35 @@ button:hover {
 .editor > image {
   width: 100%;
 }
+/* pagination  */
+.pagination {
+  width: 95%;
+  margin: 50px auto;
+  text-align: center;
+}
+.pagination button {
+  border: 1px solid #3a86ff;
+  padding: 5px 10px;
+}
+/* show current page active button  */
+.active {
+  background-color: #3a86ff;
+  border: none;
+  color: white;
+}
+/* previous button,    */
+.prev {
+  margin-right: 10px;
+}
+.prev:hover {
+  background-color: #3a86ff;
+  color: white;
+}
+/* next button */
+.next {
+  margin-left: 10px;
+}
+.next:hover {
+  background-color: #3a86ff;
+  color: white;
+}

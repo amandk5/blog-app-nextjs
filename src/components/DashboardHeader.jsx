@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import LogoAndAppName from "./LogoAndAppName";
+import { UPDATE_CURRENT_PAGE } from "@/redux/blog/blog.types";
 
 export default function DashboardHeader({ page }) {
   const { token } = useSelector((store) => store.auth);
@@ -36,7 +37,11 @@ export default function DashboardHeader({ page }) {
           bg="#e63946"
           color="white"
           _hover={{ background: "#e63946" }}
-          onClick={() => dispatch(logoutUser())}
+          onClick={() => {
+            dispatch(logoutUser());
+            // set current page to null
+            dispatch({ type: UPDATE_CURRENT_PAGE, payload: null });
+          }}
         >
           Logout
         </Button>

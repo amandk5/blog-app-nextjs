@@ -15,14 +15,14 @@ export default function MyBlogs() {
   useEffect(() => {
     // send user token as header to api
     axios
-      .get("/api/blog", {
+      .get("/api/blog?current_page=1&limit=10", {
         headers: {
           "Content-Type": "application/json",
           token: token,
         },
       })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setUserPosts(res.data.post);
       })
       .catch((err) => console.log(err));

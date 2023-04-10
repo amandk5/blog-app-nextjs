@@ -5,7 +5,6 @@ import argon2 from "argon2";
 import jwt from "jsonwebtoken";
 import NextCors from "nextjs-cors";
 
-
 export default async function handler(req, res) {
   const { method } = req;
 
@@ -25,6 +24,13 @@ export default async function handler(req, res) {
       try {
         let { token } = req.headers;
 
+        // get current page and pageLimit
+        const { current_page, limit } = req.query;
+        // converting to Number type - current_page and limit
+        let currentPage = Number(current_page) - 1;
+        const pageLimit = Number(limit);
+        // console.log(currentPage, pageLimit);
+
         if (token === undefined || token === null) {
           // to display all posts for the readers
           let blogPostsData = await Post.find({});
@@ -32,7 +38,26 @@ export default async function handler(req, res) {
           blogPostsData.forEach((el) => {
             blogPosts.push(el.content);
           });
-          res.status(200).send({ post: blogPosts });
+
+          // calculate total page based on pageLimit per page
+          const totalPages = Math.ceil(blogPosts.length / pageLimit);
+
+          // Extracting the posts for the current page using slice
+          if (currentPage == 0) {
+            blogPosts = blogPosts.slice(currentPage, limit);
+            // console.log(blogPosts);
+          } else {
+            blogPosts = blogPosts.slice(
+              currentPage + (limit - 1),
+              limit * (currentPage + 1)
+            );
+            // console.log(blogPosts);
+          }
+
+          res.status(200).send({
+            post: blogPosts,
+            totalPages: totalPages,
+          });
         } else {
           // to display only logged in users, created post
           // verify token first
@@ -58,8 +83,24 @@ export default async function handler(req, res) {
             blogPosts.push(postObj);
           });
 
+          // calculate total page based on pageLimit per page
+          const totalPages = Math.ceil(blogPosts.length / pageLimit);
+
+          // Extracting the posts for the current page using slice
+          if (currentPage == 0) {
+            blogPosts = blogPosts.slice(currentPage, limit);
+          } else {
+            blogPosts = blogPosts.slice(
+              currentPage + limit,
+              limit * (currentPage + 1)
+            );
+          }
+
           // send blogs array that contains post content and post id
-          res.status(200).send({ post: blogPosts });
+          res.status(200).send({
+            post: blogPosts,
+            totalPages: totalPages,
+          });
         }
       } catch (error) {
         res.status(400).json({ success: false });

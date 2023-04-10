@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import LogoAndAppName from "@/components/LogoAndAppName";
+import { UPDATE_CURRENT_PAGE } from "@/redux/blog/blog.types";
 
 export default function Login() {
   // get token from AuthReducer
@@ -30,6 +31,8 @@ export default function Login() {
 
     // dispatch function
     dispatch(loginUser(userCreds));
+    // also set the current page to 1
+    dispatch({ type: UPDATE_CURRENT_PAGE, payload: null });
     // reset userCreds Object
     setUserCreds({
       email: "",

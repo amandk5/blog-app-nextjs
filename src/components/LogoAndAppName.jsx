@@ -1,16 +1,22 @@
+import { UPDATE_CURRENT_PAGE } from "@/redux/blog/blog.types";
 import { Box, Heading, Text } from "@chakra-ui/react";
 import Link from "next/link";
 import React from "react";
 import { FaBlogger } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function LogoAndAppName() {
   const { token } = useSelector((store) => store.auth);
-
+  const dispatch = useDispatch();
   return (
     <>
       <Box textAlign="center" mt="3" mb="5" textUnderlineOffset="10px">
-        <Link href={token !== null ? "/dashboard" : "/"}>
+        <Link
+          href={token !== null ? "/dashboard" : "/"}
+          onClick={() => {
+            dispatch({ type: UPDATE_CURRENT_PAGE, payload: 1 });
+          }}
+        >
           <Heading display="inline">
             <span
               style={{

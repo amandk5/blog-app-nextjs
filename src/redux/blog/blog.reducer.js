@@ -4,6 +4,7 @@ import {
   SINGLE_BLOG_TO_DISPLAY,
   SINGLE_MY_BLOG_TO_DISPLAY,
   UPDATE_BLOG,
+  UPDATE_CURRENT_PAGE,
   WRITE_BLOG_POST,
 } from "./blog.types";
 
@@ -14,6 +15,7 @@ const initialState = {
   single_blog_to_display: "",
   // contain single blog post to display for admin or postAuhor
   single_my_blog_to_display: {},
+  currentPage: null,
 };
 
 export default function blogReducer(state = initialState, action) {
@@ -53,7 +55,12 @@ export default function blogReducer(state = initialState, action) {
           content: action.payload,
         },
       };
-
+    // update current page
+    case UPDATE_CURRENT_PAGE:
+      return {
+        ...state,
+        currentPage: action.payload,
+      };
     default:
       return state;
   }
